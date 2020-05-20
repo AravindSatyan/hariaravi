@@ -1,0 +1,22 @@
+import os
+import PyPDF2
+
+
+writer=PyPDF2.PdfFileWriter()
+for i in os.listdir('.'):
+    if i.endswith('.pdf'):
+     #print (i)
+     pdf=open(i,'rb')
+     total= PyPDF2.PdfFileReader(i).numPages
+     #print('The number of pages in '+i+ ' is '+ str(total))
+     a=list(range(total))
+     aa=a[-1]
+     print(aa)
+     reader=PyPDF2.PdfFileReader(i).getPage(aa)
+     
+     writer.addPage(reader)
+     print('The number of pages in '+i+ ' is '+ str(total))
+
+output=open('allfiles.pdf','wb')
+writer.write(output)
+output.close()
