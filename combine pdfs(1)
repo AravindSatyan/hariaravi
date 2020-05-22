@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May 22 12:01:10 2020
+
+@author: asatyana
+"""
+
+
+import os
+import PyPDF2
+import pprint
+import glob
+os.chdir('C:\\Users\\asatyana\\Downloads\\temp')
+logfile=open('C:\\Users\\asatyana\\Downloads\\temp'+'.txt','w')
+pp=pprint.PrettyPrinter(indent=4,stream=logfile)
+
+os.chdir('Z:\\Current')
+current_folder=os.listdir('Z:\\Current')
+writer=PyPDF2.PdfFileWriter()
+subneeded=[]
+a=[]
+ab=[]
+path=[]
+required=[]
+requiredsub=[] #the sub folder in (z->folder->subfolder)
+walk=[]
+for file in current_folder:
+ if os.path.isdir(os.path.join(os.path.abspath("."), file)):
+     required.append(os.path.abspath(file))
+#pp.pprint(required)
+for i in range(len(required)):
+    os.chdir(required[i])
+    minorsub=required[i]
+    sub=os.listdir(minorsub)
+    for file in sub: #minorsub or sub(takes too many iterations)
+        if os.path.isdir(os.path.join(os.path.abspath("."), file)):
+            subneeded.append(file)
+            #pp.pprint(str(sub)+str(minorsub))
+    for i in subneeded:
+        if i.endswith('Book'):
+             requiredsub.append(os.path.abspath(i))
+             
+#    walk.append(os.path.abspath(required[i]))
+#print(walk)
+res=list(set(requiredsub))
+#pp.pprint(res)
+for i in range(len(res)):
+    a.append(glob.glob1(res[i], '*.pdf'))
+#pp.pprint(a)
+for i in a:
+    if i!=[]:
+        ab.append(i)
+pp.pprint(ab)
+    #for i in range(len(a)):
+
+ab_list=[]
+for i in range(len(ab)):
+   if len(ab[i])<=1:
+       ab_list.append(ab[i])
+   else:
+       for j in range(len(ab[i])):
+           ab_list.append(ab[i][j])
+
+finally_done = str(ab_list).strip('[]')
+for i in range(len(finally_done)):
+               supersub=a[i]
+               if supersub.endswith('S.pdf') or supersub.endswith('1.pdf'):
+                     pdf=open(res[i] + supersub, 'rb')
+                     total= PyPDF2.PdfFileReader(supersub, strict=False).numPages
+                     tuplepdf=list(range(total))
+                     lastpage=tuplepdf[-1]
+                     print(lastpage)
+                     reader=PyPDF2.PdfFileReader(supersub, strict=False).getPage(lastpage)
+                     writer.addPage(reader)
+
+os.chdir('C:\\Users\\asatyanarayanan\\Downloads\\temp')
+output=open('allfiles.pdf','wb')
+writer.write(output)
+output.close()
