@@ -77,3 +77,29 @@ os.chdir('C:\\Users\\asatyanarayanan\\Downloads\\temp')
 output=open('allfiles.pdf','wb')
 writer.write(output)
 output.close()
+
+#-----------------------------------------------
+import pathlib
+import pprint
+import os
+import re
+import pyperclip
+
+logfile=open('/Users/hariaravi/Downloads/'+'output.doc','w')
+pp=pprint.PrettyPrinter(indent=10,stream=logfile)
+
+required=[]
+
+for filepath in pathlib.Path('/Users/hariaravi/Downloads').glob('**/*'):
+    required.append(filepath.absolute())
+main=str(required)    
+pp.pprint(main.replace('PosixPath','').replace('[]',''))
+
+nameregex=re.compile(r'''
+
+/(/'Users//(.*.pdf)/)
+''', re.VERBOSE|re.I)
+a=pyperclip.paste()
+mo=nameregex.findall(a)
+pp.pprint(mo)
+print(len(mo))
