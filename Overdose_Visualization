@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 23 14:20:46 2020
+
+@author: asatyanarayanan
+"""
+
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib
+import matplotlib.animation as animation
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+plt.style.use('seaborn-pastel')
+overdoses = pd.read_excel('overdose_data_1999-2015.xls',sheet_name='Online'
+                          ,skiprows =6)
+def get_data(table,rownum,title):
+    data = pd.DataFrame(table.loc[rownum][2:]).astype(float)
+    data.columns = {title}
+    return data
+
+
+title = 'Heroin Overdoses'
+d = get_data(overdoses,18,title)
+x = np.array(d.index)
+y = np.array(d['Heroin Overdoses'])
+overdose = pd.DataFrame(y,x)
+#XN,YN = augment(x,y,10)
+#augmented = pd.DataFrame(YN,XN)
+overdose.columns = {title}
+
+fig = plt.figure(figsize=(20,6))
+plt.xlim(1999, 2016)
+plt.ylim(np.min(overdose)[0], np.max(overdose)[0])
+plt.xlabel('Year',fontsize=20)
+plt.ylabel(title,fontsize=10)
+plt.title('Heroin Overdoses per Year',fontsize=20)
+
+fig = plt.figure()
+ax = plt.axes(xlim=(2000,2016), ylim=(2000, 12000))
+line, = ax.plot([], [],)
+
+def init():
+    line.set_data([x], [y])
+    return line, 
+
+def animate(i):
+    data = overdose.iloc[:int(i+1)] #select data range
+    p = sns.lineplot(x=data.index, y=data[title], data=data, color="r")
+    p.tick_params(labelsize=7)
+    plt.setp(p.lines,linewidth=3)
+    return line,
+
+ani= matplotlib.animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=1000, interval=100, blit=True)
+
+ani.save('HeroinOverdosesJumpy.gif', writer='pillow')
+
+def augment(xold,yold,numsteps):
+    xnew = []
+    ynew = []
+    numsteps=[10]
+    for i in range(len(xold)-1):
+        difX = xold[i+1]-xold[i]
+        stepsX = difX/numsteps
+        difY = yold[i+1]-yold[i]
+        stepsY = difY/numsteps
+        for s in range(numsteps):
+            xnew = np.append(xnew,xold[i]+s*stepsX)
+            ynew = np.append(ynew,yold[i]+s*stepsY)
+    return xnew,ynew,numsteps
