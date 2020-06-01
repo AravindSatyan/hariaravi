@@ -1,0 +1,94 @@
+''' RN1 can be duplicated multiple times
+
+Sub PasteSpecial_Examples()
+'Use the Range.PasteSpecial method for other paste types
+
+    'RN2 - Copy and PasteSpecial a Range
+    Range("A2:O4338").Copy
+    Range("A4339").PasteSpecial xlPasteValues
+    Range("Q2:Q4338").Copy
+    Range("P4339").PasteSpecial xlPasteValues
+    
+    'RN3
+    Range("A2:O4338").Copy
+    Range("A8677").PasteSpecial xlPasteValues
+    Range("R2:R4338").Copy
+    Range("P8677").PasteSpecial xlPasteValues
+    
+    'RN4
+    Range("A2:O4338").Copy
+    Range("A13015").PasteSpecial xlPasteValues
+    Range("S2:S4338").Copy
+    Range("P13015").PasteSpecial xlPasteValues
+    
+    'RN5
+    Range("A2:O4338").Copy
+    Range("A17353").PasteSpecial xlPasteValues
+    Range("T2:T4338").Copy
+    Range("P17353").PasteSpecial xlPasteValues
+    
+    'RN6
+    Range("A2:O4338").Copy
+    Range("A21691").PasteSpecial xlPasteValues
+    Range("U2:U4338").Copy
+    Range("P21691").PasteSpecial xlPasteValues
+    
+    'RN7
+    Range("A2:O4338").Copy
+    Range("A26029").PasteSpecial xlPasteValues
+    Range("V2:V4338").Copy
+    Range("P26029").PasteSpecial xlPasteValues
+    
+     'RN8
+    Range("A2:O4338").Copy
+    Range("A30367").PasteSpecial xlPasteValues
+    Range("W2:W4338").Copy
+    Range("P30367").PasteSpecial xlPasteValues
+    
+    'RN9
+     Range("A2:O4338").Copy
+    Range("A34705").PasteSpecial xlPasteValues
+    Range("X2:X4338").Copy
+    Range("P34705").PasteSpecial xlPasteValues
+    
+    'RN10
+     Range("A2:O4338").Copy
+    Range("A39043").PasteSpecial xlPasteValues
+    Range("Y2:Y4338").Copy
+    Range("P39043").PasteSpecial xlPasteValues
+    
+    'RN11
+     Range("A2:O4338").Copy
+    Range("A43381").PasteSpecial xlPasteValues
+    Range("Z2:Z4338").Copy
+    Range("P43381").PasteSpecial xlPasteValues
+    
+    'RN12
+     Range("A2:O4338").Copy
+    Range("A47719").PasteSpecial xlPasteValues
+    Range("AA2:AA4338").Copy
+    Range("P47719").PasteSpecial xlPasteValues
+    
+    
+    'RN13
+     Range("A2:O4338").Copy
+    Range("A52057").PasteSpecial xlPasteValues
+    Range("AB2:AB4338").Copy
+    Range("P52057").PasteSpecial xlPasteValues
+    
+    
+   
+    
+    'Copy and PasteSpecial a between worksheets
+    'Worksheets("Sheet1").Range("A2").Copy
+    'Worksheets("Sheet2").Range("A2").PasteSpecial Paste:=xlPasteFormulas
+    
+    'Copy and PasteSpecial between workbooks
+   ' Workbooks("Book1.xlsx").Worksheets("Sheet1").Range("A1").Copy
+    'Workbooks("Book2.xlsx").Worksheets("Sheet1").Range("A1").PasteSpecial Paste:=xlPasteFormats
+    
+    'Disable marching ants around copied range
+    'Application.CutCopyMode = False
+
+End Sub
+
