@@ -1,0 +1,29 @@
+import json
+import requests
+import pandas as pd
+from pandas.io.json import json_normalize
+
+config_url = 'https://definitivehc.maps.arcgis.com/sharing/rest/portals/self?culture=en-us&f=json'
+page_url = 'https://services7.arcgis.com/{_id}/arcgis/rest/services/Definitive_Healthcare_USA_Hospital_Beds/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=OBJECTID%20ASC&resultOffset={offset}&resultRecordCount=50&cacheHint=true&quantizationParameters=%7B%22mode%22%3A%22edit%22%7D'
+
+_id = requests.get(config_url).json()['id']
+required=[]
+offset = 0
+while True:
+    data = requests.get(page_url.format(_id=_id, offset=offset)).json()
+
+    # uncommnet this to print all data:
+    #pprint(json.dumps(data, indent=4))
+
+    for i, f in enumerate(data['features'], offset+1):
+        required.append(f['attributes'])
+        
+
+    if i % 50:
+        break
+
+    offset += 50
+df=json_normalize(required)
+
+with pd.ExcelWriter('dataFunction.xlsx', mode='A') as writer:
+    df.to_excel(writer)
