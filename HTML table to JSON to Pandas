@@ -23,7 +23,7 @@ while True:
         break
 
     offset += 50
-df=json_normalize(required)
 
+df=json_normalize(required)
 with pd.ExcelWriter('dataFunction.xlsx', mode='A') as writer:
     df.to_excel(writer)
