@@ -1,0 +1,86 @@
+Public Sub ShippingOrders()
+
+ 
+   Sheets(ActiveSheet.Name).Select
+    On Error GoTo Err_Execute
+
+    Dim olApp As Outlook.Application
+    Dim olAppt As Outlook.AppointmentItem
+    Dim blnCreated As Boolean
+    Dim olNs As Outlook.Namespace
+    Dim CalFolder As Outlook.MAPIFolder
+    Dim arrCal As String
+    Dim strOutput As String
+    Dim s As Long, c As Long
+    
+    Dim i As Long
+
+    On Error Resume Next
+    Set olApp = Outlook.Application
+
+    If olApp Is Nothing Then
+        Set olApp = Outlook.Application
+         blnCreated = True
+        Err.Clear
+    Else
+        blnCreated = False
+    End If
+
+    On Error GoTo 0
+
+    Set olNs = olApp.GetNamespace("MAPI")
+    Set CalFolder = olNs.GetDefaultFolder(olFolderCalendar)
+
+    
+    s = ActiveCell.Row
+    c = ActiveCell.Column
+     
+Dim LastRow As Long
+LastRow = Cells(Rows.Count, c).End(xlUp).Row
+
+For s = s To LastRow
+
+If IsDate(Cells(s, c)) And UCase(Trim(Cells(s, c + 6))) <> "SHIPPING - REMINDER SENT" Then
+
+    arrCal = Cells(s, c)
+
+    Set olAppt = CalFolder.Items.Add(olAppointmentItem)
+
+    'MsgBox subFolder, vbOKCancel, "Folder Name"
+
+    With olAppt
+
+    'Define calendar item properties
+        .Start = Cells(s, c) + TimeValue("08:45:00")
+        .End = Cells(s, c) + TimeValue("09:00:00")
+
+        .MeetingStatus = olMeeting
+        .RequiredAttendees = "etc... asatyanarayanan@ps-engineering.com"
+        
+        .Subject = "Schedule orders for the customer - " + Cells(s, c - 3)
+        .Location = "PSE-001"
+        .Body = "Please review the production schedule for the product " & Cells(s, c + 4) & " with a batch size of " & (Cells(s, c + 1).Value) & " and update your status by the End of the Day"
+        .BusyStatus = olBusy
+        .ReminderMinutesBeforeStart = 500
+        .ReminderSet = True
+        '.Categories = "Scheduled Orders"
+        .Categories = .Categories & "Yellow Category"
+        .ReminderMinutesBeforeStart = 500
+        .Save
+        
+        .Send
+        
+
+    End With
+    Cells(s, c + 6) = "Shipping - Reminder Sent"
+
+
+End If
+
+Next
+    Exit Sub
+
+Err_Execute:
+    MsgBox "An error occurred - Exporting items to Calendar."
+
+End Sub
