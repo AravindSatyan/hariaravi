@@ -1,0 +1,39 @@
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+
+'This line stops the worksheet updating on every change, it only updates when cell
+'H6 or H7 is touched
+If Intersect(Target, Range("R6:R7")) Is Nothing Then Exit Sub
+
+'Set the Variables to be used
+Dim pt As PivotTable
+Dim AptA As PivotTable
+Dim Field As PivotField
+Dim AFieldA As PivotField
+Dim NewCat As String
+Dim ANewCatA As String
+
+'Here you amend to suit your data
+Set pt = Worksheets("Sheet1").PivotTables("PivotTable1")
+Set AptA = Worksheets("Sheet1").PivotTables("PivotTable2")
+Set Field = pt.PivotFields("PartNumber")
+Set AFieldA = AptA.PivotFields("PartNumber")
+NewCat = Worksheets("Sheet1").Range("R6").Value
+ANewCatA = Worksheets("Sheet1").Range("R6").Value
+
+'This updates and refreshes the PIVOT table
+With pt
+Field.ClearAllFilters
+Field.CurrentPage = NewCat
+pt.RefreshTable
+End With
+
+With AptA
+AFieldA.ClearAllFilters
+AFieldA.CurrentPage = ANewCatA
+ptA.RefreshTable
+
+End With
+
+End Sub
+
+
